@@ -1,0 +1,125 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+<link href='http://fonts.googleapis.com/css?family=Mate:400,400italic|Sirin+Stencil|Cabin+Condensed:400,500,600,700|Cagliostro|Tenor+Sans|Antic|Alegreya:400italic,700italic,400,700|Balthazar|Ruluko|Lancelot&subset=latin,latin-ext,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+<link href="styles.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.mate {
+    font-family: 'Mate', serif;
+}
+.siren {    
+    font-family: 'Sirin Stencil', cursive;
+}
+.cabin {
+    font-family: 'Cabin Condensed', sans-serif;
+}
+.cagliostro { font-family: 'Cagliostro', sans-serif; }
+.tenor { font-family: 'Tenor Sans', sans-serif; }
+.antic { font-family: 'Antic', sans-serif; }
+.alegreya { font-family: 'Alegreya', serif; }
+.balthazar { font-family: 'Balthazar', serif; }
+.ruluko { font-family: 'Ruluko', sans-serif; }
+.lancelot { font-family: 'Lancelot', cursive; }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var conversation_sample = {
+            'active': true,
+            'start': 0,
+            'dialogues': [
+                {
+                    'text': 'You have entered the cave of conversation. This cave will feature a bit of conversation to test the conversation engine. How can I help you?',
+                    'return_text': 'How can I help you, then?',
+                    'mode': 'responses',
+                    'responses': [
+                        {
+                            'text': 'I have some questions to ask.',
+                            'destination': 1
+                        },
+                        { 
+                            'text': 'Let\'s continue onward!',
+                            'destination': 4
+                        },
+                        {
+                            'text': 'You are quite ugly, you know that?',
+                            'repeat': false,
+                            'destination': 2
+                            
+                        }
+                    ]                
+                },
+                {
+                    'text': 'Very well, ask away.',
+                    'return_text': 'Do you have any other questions?',
+                    'mode': 'responses',
+                    'responses': [
+                        {
+                            'text': 'What is the capital of Kenya?',
+                            'destination': 3
+                        },
+                        {
+                            'text': 'Actually, I don\'t have any more questions.',
+                            'destination': 0
+                        }
+                    ]
+                },
+                {
+                    'text': 'So it\'s been said. I\'ll get over it.',
+                    'destination': 0
+                },
+                {
+                    'text': 'Nairobi.',
+                    'destination': 1
+                },
+                {
+                    'text': 'I wholeheartedly agree.',
+                    'destination': 0
+                }
+            ]
+        };
+        
+
+        function conversation(c) {
+            dialogue(c.dialogues[c.start]);
+        }
+
+        var display = $("#display");
+        var input = $("#responses ul");
+        function dialogue(d) {
+            //console.log(d);
+            display.animate({'opacity': 0}, 'slow', function() {
+                //console.log(d.text);
+                display.text(d.text).animate({'opacity': 0.95}, 'slow');        
+            });
+            input.animate({'opacity': 0}, 'slow', function() {
+                if (d.responses) {
+                    input.html('');
+                    for (var i = 0; i < d.responses.length; i++) {
+                        var option = $('<li>' + d.responses[i].text + '</li>');
+                        option.hover(function(e) { $("#responses ul li").removeClass('select'); $(this).addClass('select') },
+                                     function(e) { $(this).removeClass('select') });
+                        input.append(option);
+                    }
+                    input.animate({'opacity': 0.95}, 'slow');
+                }
+            });
+        }
+
+        conversation(conversation_sample);
+    });
+</script>
+</head>
+<body>
+
+
+<div id="area">
+    <div id="display">Something</div>
+    <div id="responses"><ul></ul></div>
+</div>
+
+
+</body>
+</html>
